@@ -6,14 +6,21 @@ const todoSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     completed: {
       type: Boolean,
       default: false,
     },
+
     category: {
       type: String,
       enum: ["Work", "Personal", "Study"],
       default: "Personal",
+    },
+
+    dueDate: {
+      type: Date,
+      default: null,
     },
   },
   {

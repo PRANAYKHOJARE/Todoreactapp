@@ -44,3 +44,6 @@ server/.env
 frontend/.env
 dist
 .vite
+.env
+.env.local
+.env.production
