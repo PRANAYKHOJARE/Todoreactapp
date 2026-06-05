@@ -2,8 +2,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const TodoContext = createContext();
 
+console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
+
 const API_URL = import.meta.env.VITE_API_URL + "/api/todos";
 
+console.log("API_URL =", API_URL);
 export function TodoProvider({ children }) {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
