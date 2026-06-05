@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use("/api/todos", todoRoutes);
 
-console.log("MONGO_URI:", process.env.MONGO_URI);
+// console.log("MONGO_URI:", process.env.MONGO_URI);
 
 mongoose
   .connect(process.env.MONGO_URI)
