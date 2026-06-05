@@ -51,10 +51,9 @@ function App() {
   return (
     /* 🛠️ FIXED: Added grid, items-center, justify-center, and padding to center it on the screen */
     <div className="relative min-h-screen w-full overflow-y-auto overflow-x-hidden bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] flex items-center justify-center p-4 md:p-8">
-      
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 pointer-events-none" />
-      
+
       {/* Animated Blobs */}
       <motion.div
         animate={{
@@ -176,7 +175,9 @@ function App() {
                 className={`${card.bg} rounded-xl p-3 text-center shadow-sm backdrop-blur-sm border border-white/40`}
               >
                 <p className="text-xs md:text-sm font-medium text-slate-600">{card.title}</p>
-                <h3 className="text-2xl md:text-3xl font-bold text-slate-900 tabular-nums">{card.value}</h3>
+                <h3 className="text-2xl md:text-3xl font-bold text-slate-900 tabular-nums">
+                  {card.value}
+                </h3>
               </motion.div>
             ))}
           </motion.div>
@@ -334,6 +335,17 @@ function App() {
             )}
           </div>
         </motion.div>
+        <footer
+          style={{
+            textAlign: "center",
+            marginTop: "20px",
+            padding: "10px",
+            fontSize: "14px",
+            opacity: 0.7,
+          }}
+        >
+          Art by Pranay Khojare
+        </footer>
       </div>
     </div>
   );
