@@ -14,6 +14,8 @@ function App() {
   const [priority, setPriority] = useState("Medium");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [search, setSearch] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,8 +31,19 @@ function App() {
     setIsSubmitting(false);
   };
 
-  const filteredTodos = filter === "All" ? todos : todos.filter((todo) => todo.category === filter);
+  const filteredTodos = todos.filter((todo) => {
+    const matchesCategory = filter === "All" || todo.category === filter;
 
+    const searchValue = search.toLowerCase();
+
+    const matchesSearch =
+      todo.text?.toLowerCase().includes(searchValue) || // name
+      todo.category?.toLowerCase().includes(searchValue) || // work/personal
+      todo.dueDate?.toLowerCase().includes(searchValue); // date
+
+    return matchesCategory && matchesSearch;
+  });
+  
   const completedCount = todos.filter((t) => t.completed).length;
   const pendingCount = todos.length - completedCount;
 
@@ -118,7 +131,7 @@ function App() {
               >
                 TaskPilot
               </motion.h1>
-              
+
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -259,6 +272,17 @@ function App() {
             >
               🎯 Active Session
             </motion.span>
+          </div>
+
+          {/* SEARCH BAR */}
+          <div className="mb-4">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search tasks..."
+              className="w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-800 placeholder:text-slate-400 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-sm font-medium"
+            />
           </div>
 
           {/* Category Switch Filters */}
