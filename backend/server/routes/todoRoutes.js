@@ -14,6 +14,8 @@ router.post("/", async (req, res) => {
   const todo = await Todo.create({
     text: req.body.text,
     category: req.body.category || "Personal",
+    priority: req.body.priority || "Medium",
+    dueDate: req.body.dueDate || null,
   });
 
   res.status(201).json(todo);
@@ -39,6 +41,13 @@ router.put("/:id", async (req, res) => {
 
   if (req.body.category !== undefined) {
     todo.category = req.body.category;
+  }
+  if (req.body.priority !== undefined) {
+    todo.priority = req.body.priority;
+  }
+
+  if (req.body.dueDate !== undefined) {
+    todo.dueDate = req.body.dueDate;
   }
   await todo.save();
 

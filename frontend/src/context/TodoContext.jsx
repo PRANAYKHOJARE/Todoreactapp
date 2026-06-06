@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const TodoContext = createContext();
 
@@ -29,7 +30,7 @@ export function TodoProvider({ children }) {
   }, []);
 
   // Add Todo
-  const addTodo = async (text, category) => {
+  const addTodo = async (text, category, dueDate, priority) => {
     try {
       const res = await fetch(API_URL, {
         method: "POST",
@@ -39,12 +40,15 @@ export function TodoProvider({ children }) {
         body: JSON.stringify({
           text,
           category,
+          dueDate,
+          priority,
         }),
       });
 
       const newTodo = await res.json();
 
       setTodos((prev) => [...prev, newTodo]);
+      toast.success("Task added successfully 🎉");
     } catch (error) {
       console.error(error);
     }
@@ -68,6 +72,7 @@ export function TodoProvider({ children }) {
       const updatedTodo = await res.json();
 
       setTodos((prev) => prev.map((todo) => (todo._id === id ? updatedTodo : todo)));
+      toast.success(updatedTodo.completed ? "Task completed ✅" : "Task marked active 🔄");
     } catch (error) {
       console.error("Error updating todo:", error);
     }
@@ -87,6 +92,7 @@ export function TodoProvider({ children }) {
       const updatedTodo = await res.json();
 
       setTodos((prev) => prev.map((todo) => (todo._id === id ? updatedTodo : todo)));
+      toast.success("Task updated ✏️");
     } catch (error) {
       console.error("Error editing todo:", error);
     }
@@ -100,6 +106,7 @@ export function TodoProvider({ children }) {
       });
 
       setTodos((prev) => prev.filter((todo) => todo._id !== id));
+      toast.success("Task deleted 🗑️");
     } catch (error) {
       console.error("Error deleting todo:", error);
     }

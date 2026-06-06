@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTodos } from "./context/TodoContext";
 import { TodoItem } from "./components/TodoItem";
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const { todos, loading, addTodo } = useTodos();
@@ -10,6 +11,7 @@ function App() {
   const [category, setCategory] = useState("Personal");
   const [filter, setFilter] = useState("All");
   const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState("Medium");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -18,11 +20,12 @@ function App() {
     if (!text.trim() || isSubmitting) return;
     setIsSubmitting(true);
 
-    await addTodo(text, category, dueDate);
+    await addTodo(text, category, dueDate, priority);
 
     setText("");
     setCategory("Personal");
     setDueDate("");
+    setPriority("Medium");
     setIsSubmitting(false);
   };
 
@@ -52,7 +55,7 @@ function App() {
     /* 🛠️ FIXED: Added grid, items-center, justify-center, and padding to center it on the screen */
     <div className="relative min-h-screen w-full overflow-y-auto overflow-x-hidden bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] flex items-center justify-center p-4 md:p-8">
       {/* Background Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 pointer-events-none" />
 
       {/* Animated Blobs */}
       <motion.div
@@ -65,7 +68,7 @@ function App() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-violet-400/20 blur-[140px] pointer-events-none"
+        className="absolute left-0 top-0 h-[500px] w-[500px] rounded-full bg-violet-500/15 blur-[180px] pointer-events-none"
       />
       <motion.div
         animate={{
@@ -77,7 +80,7 @@ function App() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute right-0 top-20 h-[450px] w-[450px] rounded-full bg-blue-400/20 blur-[140px] pointer-events-none"
+        className="absolute right-0 top-20 h-[450px] w-[450px] rounded-full bg-blue-500/15 blur-[180px] pointer-events-none"
       />
       <motion.div
         animate={{
@@ -88,7 +91,7 @@ function App() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute bottom-0 left-1/3 h-[400px] w-[400px] rounded-full bg-cyan-400/15 blur-[140px] pointer-events-none"
+        className="absolute bottom-0 left-1/3 h-[400px] w-[400px] rounded-full bg-cyan-500/10 blur-[180px] pointer-events-none"
       />
 
       {/* Main Form Box Container */}
@@ -101,7 +104,13 @@ function App() {
         >
           {/* Title and Progress Bar Header Header Row */}
           <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
+            <div className="relative">
+              <div className="absolute -top-2 left-[170px]">
+                <span className="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
+                  v2.0
+                </span>
+              </div>
+
               <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -109,7 +118,7 @@ function App() {
               >
                 TaskPilot
               </motion.h1>
-
+              
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -188,7 +197,7 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             onSubmit={handleSubmit}
-            className="mb-5 flex flex-col sm:flex-row gap-2"
+            className="mb-5 flex flex-wrap gap-2"
           >
             <input
               type="text"
@@ -216,7 +225,15 @@ function App() {
               onChange={(e) => setDueDate(e.target.value)}
               className="rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-700 text-sm font-medium outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all"
             />
-
+            <select
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+              className="rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-slate-700 text-sm font-medium outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all"
+            >
+              <option value="High">🔴 High</option>
+              <option value="Medium">🟡 Medium</option>
+              <option value="Low">🟢 Low</option>
+            </select>
             <motion.button
               type="submit"
               whileHover={{ scale: 1.02, y: -1 }}
@@ -326,6 +343,7 @@ function App() {
                       text={todo.text}
                       completed={todo.completed}
                       category={todo.category}
+                      priority={todo.priority}
                       dueDate={todo.dueDate}
                       createdAt={todo.createdAt}
                     />
